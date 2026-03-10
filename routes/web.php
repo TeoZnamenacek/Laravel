@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\VijestiController;
+use App\Http\Controllers\ClanakController;
+use App\Http\Controllers\BlogController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -101,6 +104,39 @@ Route::get('/studenti', function () {
     return view('studenti', compact('studenti'));
 });
 
-Route::get('/kontakt', function () {
-    return view('kontakt');
+Route::get('/knjige', function () {
+
+    $knjige = [
+        ["naslov" => "Na Drini ćuprija", "autor" => "Ivo Andrić", "godina" => 1945, "procitana" => true],
+        ["naslov" => "Prokleta avlija", "autor" => "Ivo Andrić", "godina" => 1954, "procitana" => false],
+        ["naslov" => "Derviš i smrt", "autor" => "Meša Selimović", "godina" => 1966, "procitana" => true],
+        ["naslov" => "Tvrđava", "autor" => "Meša Selimović", "godina" => 1970, "procitana" => false],
+        ["naslov" => "Bašta sljezove boje", "autor" => "Branko Ćopić", "godina" => 1970, "procitana" => true],
+    ];
+
+    $procitano = collect($knjige)->where('procitana', true)->count();
+    $ukupno = count($knjige);
+
+    return view('knjige', [
+        "knjige" => $knjige,
+        "procitano" => $procitano,
+        "ukupno" => $ukupno,
+        "aktivnaStrana" => "knjige"
+    ]);
 });
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/vijesti', [VijestiController::class, 'index'])->name('vijesti.index');
+Route::get('/vijesti/{id}', [VijestiController::class, 'show'])->name('vijesti.show');
+
+
+Route::resource('clanci', ClanakController::class);
+
+
+Route::get('/blog',       [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{id}',  [BlogController::class, 'show'])->name('blog.show');
+
+
