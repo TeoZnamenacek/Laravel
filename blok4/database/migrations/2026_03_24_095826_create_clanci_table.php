@@ -6,24 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Pokretanje migracije — kreira tablicu
-     */
     public function up(): void
     {
         Schema::create('clanci', function (Blueprint $table) {
-            $table->id();                              // auto-increment primary key
-            $table->string('naslov');                  // VARCHAR(255)
-            $table->text('sadrzaj');                   // TEXT (dugački tekst)
-            $table->string('autor');                   // VARCHAR(255)
-            $table->boolean('objavljeno')->default(false); // TINYINT, default 0
-            $table->timestamps();                      // created_at i updated_at
+            $table->id();
+            $table->string('naslov');
+            $table->text('sadrzaj');
+            $table->string('autor');
+            $table->string('kategorija')->default('opce');
+            $table->boolean('objavljeno')->default(false);
+            $table->string('slika')->nullable();
+            $table->timestamps();
         });
     }
 
-    /**
-     * Poništavanje migracije — briše tablicu
-     */
     public function down(): void
     {
         Schema::dropIfExists('clanci');
